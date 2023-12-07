@@ -18,6 +18,8 @@ for jpg_name in os.listdir(root_path):
         day = f'{date[4 : 6]}'.zfill(2)
 
         new_path = f'{root_path}/Screenshots/'
+        if not os.path.exists(new_path):
+            os.mkdir(new_path)
 
         new_path += f'/{year}³â'
         if not os.path.exists(new_path):
