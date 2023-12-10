@@ -1,0 +1,29 @@
+# 언어학과심리실험
+### 기말고사 대체과제 중간 보고서
+#### 201801285 컴퓨터전자지스템공학과 김희찬
+
+- 총 19개의 테스트 데이터셋에서 ‘231203 김강현.csv’ 파일을 제외한 모든 데이터를 대상으로 합니다. (인코딩 문제)
+
+- 새로 저장할 파일에는 ‘who’, ‘correctness’, ‘correct_response’, ‘response_target’, ‘response_time’, ‘relation’, ‘prime’, ‘prime_condition’, ‘target’, ‘target_condition’ 이라는 컬럼들을 포함시킵니다.
+
+- ‘who’ 컬럼은 각 데이터가 원래 저장되어 있던 엑셀 파일의 이름을 나타내며, ‘correctness’ 컬럼은 'correct_response’와 'response_target’이 일치하는 경우 1로, 불일치하는 경우 0으로 표시됩니다.
+
+### 필터링되어 취합된 데이터 읽기
+```{r}
+library(knitr)
+library(readxl)
+
+data <- read_excel("combined_data.xlsx")
+```
+
+### relation 기준으로 한 정답률, 반응시간
+```{r}
+orderby_relation_results <- aggregate(cbind(correctness, response_time) ~ relation, data, mean)
+kable(orderby_relation_results, format = "markdown", digits = 3)
+```
+
+### prime과 target의 condition을 기준으로 한 정답률, 반응시간
+```{r}
+orderby_conditions_results <- aggregate(cbind(correctness, response_time) ~ relation + prime_condition + target_condition, data, mean)
+kable(orderby_conditions_results, format = "markdown", digits = 5)
+```
