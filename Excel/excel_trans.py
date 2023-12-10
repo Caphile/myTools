@@ -1,4 +1,5 @@
 from tkinter import filedialog, Tk
+import chardet
 import pandas as pd
 import os
 
@@ -16,13 +17,20 @@ def filePaths():
     
     return paths, names
 
+def detect_encoding(file_path):
+    with open(file_path, 'rb') as f:
+        result = chardet.detect(f.read())
+    return result['encoding']
+
 def trans():
     paths, names = filePaths()
     for path, name in zip(paths, names):
         if name.endswith('.csv'):
-            df = pd.read_csv(os.path.join(path, name))
+            encoding = detect_encoding(os.path.join(path, name))
+            df = pd.read_csv(os.path.join(path, name), encoding = encoding)
         elif name.endswith('.xlsx'):
-            df = pd.read_excel(os.path.join(path, name))
+            encoding = detect_encoding(os.path.join(path, name))
+            df = pd.read_excel(os.path.join(path, name), encoding = encoding)
         else:
             print(f"Unsupported file type: {name}")
             continue
