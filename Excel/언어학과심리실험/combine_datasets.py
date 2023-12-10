@@ -42,7 +42,7 @@ def combine():
         df = df.iloc[3 : ]  # 맨 위 3개의 레코드는 연습문제
         df = df[columns_to_keep]
         df.insert(0, 'who', name)
-        df.insert(1, 'correctness', df.apply(lambda row: 'O' if row['correct_response'] == row['response_target'] else 'X', axis = 1))
+        df.insert(1, 'correctness', df.apply(lambda row: 1 if row['correct_response'] == row['response_target'] else 0, axis = 1))
 
         combined_df = pd.concat([combined_df, df], ignore_index = True)
 
