@@ -12,18 +12,46 @@
 ```{r}
 library(knitr)
 library(readxl)
+library(ggplot2)
 
 data <- read_excel("combined_data.xlsx")
 ```
 
 ### relation 기준으로 한 정답률, 반응시간
 ```{r}
-orderby_relation_results <- aggregate(cbind(correctness, response_time) ~ relation, data, mean)
-kable(orderby_relation_results, format = "markdown", digits = 3)
+groupby_relation_results <- aggregate(cbind(correctness, response_time) ~ relation, data, mean)
+kable(groupby_relation_results, format = "markdown", digits = 3)
 ```
 
 ### prime과 target의 condition을 기준으로 한 정답률, 반응시간
 ```{r}
-orderby_conditions_results <- aggregate(cbind(correctness, response_time) ~ relation + prime_condition + target_condition, data, mean)
-kable(orderby_conditions_results, format = "markdown", digits = 5)
+groupby_conditions_results <- aggregate(cbind(correctness, response_time) ~ relation + prime_condition + target_condition, data, mean)
+kable(groupby_conditions_results, format = "markdown", digits = 5)
+
+orderby_conditions_results <- groupby_conditions_results[order(-groupby_conditions_results$response_time), ]
+
+ggplot(orderby_conditions_results, aes(x = reorder(interaction(relation, prime_condition, target_condition), -response_time), y = response_time)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(x = "Relation and Conditions", y = "Response Time", title = "Response Time by Relation and Conditions")
+```
+
+### aritifactual condition이 포함된 경우를 기준으로 한 정답률, 반응시간
+```{r}
+artifactual_data <- subset(data, prime_condition == "artifactual" | target_condition == "artifactual")
+artifactual_summary <- aggregate(cbind(correctness, response_time) ~ relation + prime_condition + target_condition, artifactual_data, mean)
+kable(artifactual_summary, format = "markdown", digits = 5)
+
+artifactual_summary_means <- colMeans(artifactual_summary[, c("correctness", "response_time")])
+print(artifactual_summary_means)
+```
+
+### natural condition이 포함된 경우를 기준으로 한 정답률, 반응시간
+```{r}
+natural_data <- subset(data, prime_condition == "natural" | target_condition == "natural")
+natural_summary <- aggregate(cbind(correctness, response_time) ~ relation + prime_condition + target_condition, natural_data, mean)
+kable(natural_summary, format = "markdown", digits = 5)
+
+natural_summary_means <- colMeans(natural_summary[, c("correctness", "response_time")])
+print(natural_summary_means)
 ```
