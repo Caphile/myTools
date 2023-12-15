@@ -23,6 +23,19 @@ groupby_relation_results <- aggregate(cbind(correctness, response_time) ~ relati
 kable(groupby_relation_results, format = "markdown", digits = 3)
 ```
 
+### relation 기준으로 한 정답률, 반응시간의 One-way ANOVA
+```{r}
+anova_correctness <- aov(correctness ~ relation, data = data)
+anova_response_time <- aov(response_time ~ relation, data = data)
+
+summary(anova_correctness)
+summary(anova_response_time)
+
+# relation은 정답률에는 유의미한 영향을 미치고, response_time에는 그렇지 못함.
+```
+
+---
+
 ### prime과 target의 condition을 기준으로 한 정답률, 반응시간
 ```{r}
 groupby_conditions_results <- aggregate(cbind(correctness, response_time) ~ relation + prime_condition + target_condition, data, mean)
@@ -35,6 +48,39 @@ ggplot(orderby_conditions_results, aes(x = reorder(interaction(relation, prime_c
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
   labs(x = "Relation and Conditions", y = "Response Time", title = "Response Time by Relation and Conditions")
 ```
+
+### prime과 target의 condition을 기준으로 한 정답률, 반응시간의 Two-way ANOVA
+```{r}
+data_conditions <- subset(groupby_conditions_results, prime_condition %in% c("artifactual", "natural", "non-word") & target_condition %in% c("artifactual", "natural", "non-word"))
+
+anova_correctness_conditions <- aov(correctness ~ prime_condition * target_condition, data = data_conditions)
+anova_response_time_conditions <- aov(response_time ~ prime_condition * target_condition, data = data_conditions)
+
+summary(anova_correctness_conditions)
+summary(anova_response_time_conditions)
+
+# target_condition은 정답률과 response_time에 통계적으로 유의미한 영향을 미침.
+# prime_condition과 prime_condition과 target_condition의 상호작용은 정답률과 response_time에 유의미한 영향을 미치지 않음.
+# 즉, target_condition에 따라 correctness와 response_time은 통계적으로 유의미하게 달라지지만, prime_condition과 prime_condition과 target_condition의 상호작용은 그렇지 않음.
+```
+
+### relation 및 prime과 target의 condition을 기준으로 한 정답률, 반응시간의 Three-way ANOVA
+```{r}
+anova_correctness <- aov(correctness ~ relation * prime_condition * target_condition, data = data)
+anova_response_time <- aov(response_time ~ relation * prime_condition * target_condition, data = data)
+
+summary(anova_correctness)
+summary(anova_response_time)
+
+# relation, prime_condition, 그리고 target_condition은 정답률에 통계적으로 유의미한 영향을 미침
+# relation과 prime_condition의 상호작용은 정답률에 통계적으로 유의미한 영향을 미치지 않음.
+# relation과 target_condition의 상호작용은 정답률에 통계적으로 유의미한 영향을 미침.
+# prime_condition과 target_condition의 상호작용은 정답률에 통계적으로 유의미한 영향을 미침.
+# relation, prime_condition, target_condition의 세 가지 변수의 상호작용은 정답률에 통계적으로 유의미한 영향을 미치지 않음.
+# 모든 변수와 상호작용 효과는 response_time에 통계적으로 유의미한 영향을 미치지 않음.
+```
+
+---
 
 ### aritifactual condition이 포함된 경우를 기준으로 한 정답률, 반응시간
 ```{r}
@@ -54,4 +100,15 @@ kable(natural_summary, format = "markdown", digits = 5)
 
 natural_summary_means <- colMeans(natural_summary[, c("correctness", "response_time")])
 print(natural_summary_means)
+```
+
+### aritifactual/natural condition이 포함된 경우를 기준으로 한 정답률, 반응시간의 독립표본 t-검정
+```{r}
+correctness_t_test <- t.test(artifactual_summary$correctness, natural_summary$correctness)
+response_time_t_test <- t.test(artifactual_summary$response_time, natural_summary$response_time)
+
+print(correctness_t_test)
+print(response_time_t_test)
+
+# p-value가 각각 0.8419, 0.7114로 유의미한 차이를 보이지 않음.
 ```

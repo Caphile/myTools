@@ -39,3 +39,12 @@ print(natural_summary)
 
 natural_summary_means <- colMeans(natural_summary[, c("correctness", "response_time")])
 print(natural_summary_means)
+
+
+correctness_t_test <- t.test(artifactual_summary$correctness, natural_summary$correctness)
+response_time_t_test <- t.test(artifactual_summary$response_time, natural_summary$response_time)
+
+print(correctness_t_test)
+print(response_time_t_test)
+
+
