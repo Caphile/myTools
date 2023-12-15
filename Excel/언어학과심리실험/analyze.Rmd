@@ -1,3 +1,7 @@
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
 # 언어학과심리실험
 ### 기말고사 대체과제 중간 보고서
 #### 201801285 컴퓨터전자지스템공학과 김희찬
@@ -30,9 +34,8 @@ anova_response_time <- aov(response_time ~ relation, data = data)
 
 summary(anova_correctness)
 summary(anova_response_time)
-
-# relation은 정답률에는 유의미한 영향을 미치고, response_time에는 그렇지 못함.
 ```
+- relation은 정답률에는 유의미한 영향을 미치고, response_time에는 그렇지 못함.
 
 ---
 
@@ -58,11 +61,10 @@ anova_response_time_conditions <- aov(response_time ~ prime_condition * target_c
 
 summary(anova_correctness_conditions)
 summary(anova_response_time_conditions)
-
-# target_condition은 정답률과 response_time에 통계적으로 유의미한 영향을 미침.
-# prime_condition과 prime_condition과 target_condition의 상호작용은 정답률과 response_time에 유의미한 영향을 미치지 않음.
-# 즉, target_condition에 따라 correctness와 response_time은 통계적으로 유의미하게 달라지지만, prime_condition과 prime_condition과 target_condition의 상호작용은 그렇지 않음.
 ```
+- target_condition은 정답률과 response_time에 통계적으로 유의미한 영향을 미침.
+- prime_condition과 prime_condition과 target_condition의 상호작용은 정답률과 response_time에 유의미한 영향을 미치지 않음.
+- 즉, target_condition에 따라 correctness와 response_time은 통계적으로 유의미하게 달라지지만, prime_condition과 prime_condition과 target_condition의 상호작용은 그렇지 않음.
 
 ### relation 및 prime과 target의 condition을 기준으로 한 정답률, 반응시간의 Three-way ANOVA
 ```{r}
@@ -71,14 +73,13 @@ anova_response_time <- aov(response_time ~ relation * prime_condition * target_c
 
 summary(anova_correctness)
 summary(anova_response_time)
-
-# relation, prime_condition, 그리고 target_condition은 정답률에 통계적으로 유의미한 영향을 미침
-# relation과 prime_condition의 상호작용은 정답률에 통계적으로 유의미한 영향을 미치지 않음.
-# relation과 target_condition의 상호작용은 정답률에 통계적으로 유의미한 영향을 미침.
-# prime_condition과 target_condition의 상호작용은 정답률에 통계적으로 유의미한 영향을 미침.
-# relation, prime_condition, target_condition의 세 가지 변수의 상호작용은 정답률에 통계적으로 유의미한 영향을 미치지 않음.
-# 모든 변수와 상호작용 효과는 response_time에 통계적으로 유의미한 영향을 미치지 않음.
 ```
+- relation, prime_condition, 그리고 target_condition은 정답률에 통계적으로 유의미한 영향을 미침
+- relation과 prime_condition의 상호작용은 정답률에 통계적으로 유의미한 영향을 미치지 않음.
+-  relation과 target_condition의 상호작용은 정답률에 통계적으로 유의미한 영향을 미침.
+-  prime_condition과 target_condition의 상호작용은 정답률에 통계적으로 유의미한 영향을 미침.
+-  relation, prime_condition, target_condition의 세 가지 변수의 상호작용은 정답률에 통계적으로 유의미한 영향을 미치지 않음.
+-  모든 변수와 상호작용 효과는 response_time에 통계적으로 유의미한 영향을 미치지 않음.
 
 ---
 
@@ -109,6 +110,5 @@ response_time_t_test <- t.test(artifactual_summary$response_time, natural_summar
 
 print(correctness_t_test)
 print(response_time_t_test)
-
-# p-value가 각각 0.8419, 0.7114로 유의미한 차이를 보이지 않음.
 ```
+- p-value가 각각 0.8419, 0.7114로 유의미한 차이를 보이지 않음.
