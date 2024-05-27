@@ -1,4 +1,4 @@
-import time
+import time, re
 
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 from matplotlib.dates import HourLocator, DateFormatter
 
-def extract(url='https://www.lottecinema.co.kr/NLCHS/Cinema/Detail?divisionCode=1&detailDivisionCode=1&cinemaID=1007', day=0):
+def extract(cinemaID=1007, day=0):
     # options
     service = Service(ChromeDriverManager().install())
     options = webdriver.ChromeOptions()
@@ -23,6 +23,7 @@ def extract(url='https://www.lottecinema.co.kr/NLCHS/Cinema/Detail?divisionCode=
 
     wait = WebDriverWait(driver, 10)
 
+    url = 'https://www.lottecinema.co.kr/NLCHS/Cinema/Detail?divisionCode=1&detailDivisionCode=1&cinemaID=' + str(cinemaID)
     driver.get(url)
 
     closebanner = wait.until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[20]/div[3]/button')))
@@ -72,8 +73,12 @@ def visualize_movie_schedule(movies, day=0):
     fig, ax = plt.subplots(figsize=(12, 8))
     colors = plt.cm.tab20.colors + plt.cm.tab20b.colors + plt.cm.tab20c.colors
 
-    hall_numbers = sorted(set(showing['hall'] for movie in movies for showing in movie['showings']))
-    hall_count = len(hall_numbers)
+    def extract_number(hall_name):
+        match = re.search(r'(\d+)', hall_name)
+        return int(match.group()) if match else float('inf')
+
+    hall_names = sorted(set(showing['hall'] for movie in movies for showing in movie['showings']), key=extract_number)
+    hall_count = len(hall_names)
 
     for idx, movie in enumerate(movies):
         for showing in movie['showings']:
@@ -84,28 +89,26 @@ def visualize_movie_schedule(movies, day=0):
             start_time = clear_overnight(start_time_str)
             end_time = clear_overnight(end_time_str)
 
-            ax.plot([start_time, end_time], [hall, hall], marker='o', color=colors[idx])
-            ax.text(start_time, hall, f"{showing['time']} - {showing['end_time']}\n{movie['title']}", fontsize=8, va='bottom', ha='left')
+            hall_index = hall_names.index(hall)
+            ax.plot([start_time, end_time], [hall_index, hall_index], marker='o', color=colors[idx])
+            ax.text(start_time, hall_index, f"{showing['time']} - {showing['end_time']}\n{movie['title']}", fontsize=8, va='bottom', ha='left')
 
     current_date = datetime.now()
     target_date = current_date + timedelta(days=day)
     formatted_date = target_date.strftime('%Y년 %m월 %d일')
 
     ax.set_yticks(range(hall_count))
-    ax.set_yticklabels([f'{hall}' for hall in hall_numbers], fontsize=10)
-    # ax.set_xlabel('시간')
-    # ax.set_ylabel('상영관')
+    ax.set_yticklabels(hall_names, fontsize=10)
     ax.set_title(f'{formatted_date} 상영 일정')
     fig.canvas.manager.set_window_title('상영 일정')
 
-    # x축 눈금 1시간 단위로 설정
     ax.xaxis.set_major_locator(HourLocator())
     ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))
 
-    plt.tight_layout()
     plt.show()
 
 if __name__ == '__main__':
-    dayafter = 4
+    dayafter = 2
+    cinemaID = 1016
     movies = extract(day=dayafter)
     visualize_movie_schedule(movies, dayafter)
