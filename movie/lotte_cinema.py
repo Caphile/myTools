@@ -13,7 +13,9 @@ import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 from matplotlib.dates import HourLocator, DateFormatter
 
-def extract(cinemaID=1007, day=0):
+import cinema_list as CL
+
+def extract(cinemaID, day):
     # options
     service = Service(ChromeDriverManager().install())
     options = webdriver.ChromeOptions()
@@ -58,7 +60,7 @@ def extract(cinemaID=1007, day=0):
     driver.quit()
     return movies
 
-def visualize_movie_schedule(movies, day=0):
+def visualize_movie_schedule(movies, cinema, day=0):
     def clear_overnight(time_str):
         if int(time_str.split(':')[0]) >= 24:
             hour = int(time_str.split(':')[0]) - 24
@@ -99,16 +101,40 @@ def visualize_movie_schedule(movies, day=0):
 
     ax.set_yticks(range(hall_count))
     ax.set_yticklabels(hall_names, fontsize=10)
-    ax.set_title(f'{formatted_date} 상영 일정')
-    fig.canvas.manager.set_window_title('상영 일정')
+    ax.set_title(f'{formatted_date} {cinema}점 상영 일정')
+    fig.canvas.manager.set_window_title(f'{formatted_date} {cinema}점 상영 일정')
 
     ax.xaxis.set_major_locator(HourLocator())
     ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))
 
     plt.show()
 
+def main():
+    print("지역을 선택하세요:")
+    for number, region_name in CL.regions['kr'].items():
+        print(f"{number}. {region_name}", end='  ')
+
+    region_number = int(input("\n지역번호: "))
+    selected_region_kr = CL.regions['kr'][region_number]
+    selected_region_en = CL.regions['en'][region_number]
+
+    cinema_list = CL.cinemas[selected_region_en]
+    print('-----------------------------------')
+    print(f"{selected_region_kr}의 영화관 목록:")
+    for idx, (cinema_name, _) in enumerate(cinema_list.items(), start=1):
+        print(f"{idx}. {cinema_name}", end='   ')
+
+    cinema_number = int(input("\n영화관 번호: "))
+    selected_cinema = list(cinema_list.keys())[cinema_number - 1]
+    cinemaID = cinema_list[selected_cinema]
+
+    print('-----------------------------------')
+    current_date = datetime.now()
+    print(f'오늘 날짜 : {current_date.strftime('%Y년 %m월 %d일')}')
+    dayafter = int(input("며칠 뒤에 볼건지 : "))
+
+    movies = extract(cinemaID, dayafter)
+    visualize_movie_schedule(movies, selected_cinema, dayafter)
+
 if __name__ == '__main__':
-    dayafter = 2
-    cinemaID = 1016
-    movies = extract(day=dayafter)
-    visualize_movie_schedule(movies, dayafter)
+    main()
