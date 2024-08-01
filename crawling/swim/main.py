@@ -1,0 +1,42 @@
+import requests
+from bs4 import BeautifulSoup
+
+base_url = 'https://sports.idongjak.or.kr/home/171'
+home_url = base_url + '?center=DONGJAK03&category1=01&category2=ALL&title=&train_day='
+
+response = requests.get(home_url)
+response.raise_for_status()
+
+soup = BeautifulSoup(response.text, 'html.parser')
+
+table = soup.find('table', class_='list_lecture all_border')
+rows = table.find('tbody', class_='txtcenter').find_all('tr')
+
+data = []
+for row in rows:
+    cols = row.find_all(['td', 'th'])
+    cols_text = [col.get_text(strip=True) for col in cols]
+
+    link_tag = row.find('a', href=True)
+    if link_tag:
+        link = link_tag['href']
+        linked_url = base_url + link
+        
+        detail_response = requests.get(linked_url)
+        detail_response.raise_for_status()
+        
+        detail_soup = BeautifulSoup(detail_response.text, 'html.parser')
+
+        try:
+            info_data = detail_soup.select_one('#contents > article > div > div > div.infomation > div.info_data > dl > dd:nth-child(12)')
+            remain_cnt = info_data.get_text(separator=' ').strip()
+        except:
+            info_data = detail_soup.select_one('#form_lecture_reg > fieldset > div > div.proc_read > div.infomation > div.info_data > dl > dd:nth-child(12)')
+            remain_cnt = info_data.get_text(separator=' ').strip()
+
+        cols_text.append(remain_cnt)
+
+    data.append(cols_text)
+
+for item in data:
+    print(item)
