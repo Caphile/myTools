@@ -12,10 +12,18 @@ soup = BeautifulSoup(response.text, 'html.parser')
 table = soup.find('table', class_='list_lecture all_border')
 rows = table.find('tbody', class_='txtcenter').find_all('tr')
 
+indices_to_remove = {0, 5, 6, 7}
+seen_ids = set()
+
 data = []
 for row in rows:
     cols = row.find_all(['td', 'th'])
     cols_text = [col.get_text(strip=True) for col in cols]
+
+    class_id = row.get('data-classcd')
+    if class_id in seen_ids:
+        continue
+    seen_ids.add(class_id)
 
     link_tag = row.find('a', href=True)
     if link_tag:
@@ -34,9 +42,12 @@ for row in rows:
             info_data = detail_soup.select_one('#form_lecture_reg > fieldset > div > div.proc_read > div.infomation > div.info_data > dl > dd:nth-child(12)')
             remain_cnt = info_data.get_text(separator=' ').strip()
 
-        cols_text.append(remain_cnt)
+        cols_text.append(f'잔여{remain_cnt}')
+        cols_text.append(linked_url)
+        filtered_text = [item for idx, item in enumerate(cols_text) if idx not in indices_to_remove]
 
-    data.append(cols_text)
+    if remain_cnt != '마감':
+        data.append(filtered_text) 
 
 for item in data:
     print(item)
