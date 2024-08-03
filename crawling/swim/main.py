@@ -1,8 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 
+# 사당문화센터 : 3, 삼일수영장 : 7
+center_num = 3
+center = 'DONGJAK0' + str(center_num)
+
 base_url = 'https://sports.idongjak.or.kr/home/171'
-home_url = base_url + '?center=DONGJAK03&category1=01&category2=ALL&title=&train_day='
+home_url = base_url + f'?center={center}&category1=01&category2=ALL&title=&train_day='
 
 response = requests.get(home_url)
 response.raise_for_status()
@@ -50,4 +54,9 @@ for row in rows:
         data.append(filtered_text) 
 
 for item in data:
-    print(item)
+    print(' / '.join(item[:-1]))
+    print(item[-1])
+    print('')
+
+import os
+os.system("pause")
