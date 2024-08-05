@@ -5,7 +5,7 @@ import os
 
 def remain_check():
     # 사당문화센터 : 3, 삼일수영장 : 7
-    center_num = 7
+    center_num = 3
     center = 'DONGJAK0' + str(center_num)
 
     base_url = 'https://sports.idongjak.or.kr/home/171'
@@ -60,19 +60,33 @@ def remain_check():
             print('')
 
     if data == []:
-        print('전체 마감')
+        print('남은 강좌 없음')
 
 if __name__ == '__main__':
 
     refresh_sec = 60
 
-    while 1:
-        print("종료시 ctrl + c\n")
+    error_wait_sec = 5
+    error_cnt_max = 5
+    error_cnt = 1
+    while error_cnt < error_cnt_max:
+        print("ctrl + c 로 종료\n")
+        try:
+            remain_check()
 
-        remain_check()
-
-        for i in range(refresh_sec, 0, -1):
-            print(f"새로고침까지 남은 시간: {i}초", end='\r', flush=True)
-            time.sleep(1)
+            for i in range(refresh_sec, 0, -1):
+                print(f"새로고침까지 {i}초", end='\r', flush=True)
+                time.sleep(1)
+            error_cnt = 0
+        except:
+            print(f"오류발생({error_cnt}/{error_cnt_max})")
+            for i in range(error_wait_sec, 0, -1):
+                print(f"재시도까지 {i}초", end='\r', flush=True)
+                time.sleep(1)
+            error_cnt += 1
 
         os.system('cls')
+
+    if error_cnt == error_cnt_max:
+        print("나중에 다시 시도")
+        os.system('pause')
