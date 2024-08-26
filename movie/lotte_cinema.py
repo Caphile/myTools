@@ -8,6 +8,13 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 
+import shutil, os
+
+def cash_manage():
+    cache_dir = os.path.join(os.getenv('USERPROFILE'), '.wdm')
+    if os.path.exists(cache_dir):
+        shutil.rmtree(cache_dir)
+
 import matplotlib.pyplot as plt
 
 from datetime import datetime, timedelta
@@ -16,6 +23,9 @@ from matplotlib.dates import HourLocator, DateFormatter
 import cinema_list as CL
 
 def extract(cinemaID, day):
+
+    cash_manage()
+
     # options
     service = Service(ChromeDriverManager().install())
     options = webdriver.ChromeOptions()
@@ -60,7 +70,7 @@ def extract(cinemaID, day):
     driver.quit()
     return movies
 
-def visualize_movie_schedule(movies, cinema, day=0):
+def visualize_movie_schedule(movies, cinema, day):
     def clear_overnight(time_str):
         if int(time_str.split(':')[0]) >= 24:
             hour = int(time_str.split(':')[0]) - 24
