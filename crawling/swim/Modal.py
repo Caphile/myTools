@@ -1,4 +1,5 @@
 import tkinter as tk
+import time
 import sys
 import threading
 import webbrowser
@@ -67,31 +68,67 @@ def open_link(event):
 
     webbrowser.open(line_text)
 
+def countdown(message, seconds):
+    def update_countdown(i):
+        if i > 0:
+            status_label.config(text=f"{message} {i}초")
+            root.after(1000, update_countdown, i - 1)
+        else:
+            status_label.config(text=f"{message} 완료!")
+
+    update_countdown(seconds)
+
 # 실행 루프
 def run_loop():
-    # check_remain_class 함수 호출
-    classes = ClassScraper.check_remaining_classes()
 
-    # 텍스트 출력
-    for cnt, class_row in enumerate(classes):
-        last_text = class_row[-1]   # 링크 주소
+    refresh_sec = 60
+    error_wait_sec = 5
+    error_cnt_max = 5
+    error_cnt = 1
 
-        text_widget.config(state='normal')  # 편집 가능하도록 설정
-        text_widget.insert('end', str(cnt + 1) + '.' + '\n')
-        text_widget.insert('end', ' / '.join(class_row[:3]) + '\n')
-        text_widget.insert('end', ' / '.join(class_row[3:-1]) + '\n')
-        text_widget.insert('end', last_text + '\n')
+    while error_cnt < error_cnt_max:
+        try:
+            status_label.config(text="검색중..")
+            classes = ClassScraper.check_remaining_classes()
 
-        # 하이퍼링크 스타일을 적용
-        start_index = text_widget.index("end-2l")
-        end_index = text_widget.index("end-1c")
+            # 기존 텍스트 삭제
+            text_widget.config(state='normal')
+            text_widget.delete('1.0', 'end')
+            text_widget.config(state='disabled')
 
-        text_widget.tag_add("hyperlink", start_index, end_index)
-        text_widget.tag_configure("hyperlink", foreground="blue", underline=True)
+            if classes == []:
+                text_widget.config(state='normal')
+                text_widget.delete('1.0', 'end')
+                text_widget.insert('end', "남은 강좌 없음\n")
+                text_widget.config(state='disabled')
+            else:
+                # 결과물 출력
+                for cnt, class_row in enumerate(classes):
+                    last_text = class_row[-1]   # 링크 주소
 
-        # 클릭 이벤트 바인딩 (Label 위젯에서 텍스트 클릭 시 링크 열기)
-        text_widget.tag_bind("hyperlink", "<Button-1>", open_link)
-        text_widget.config(state='disabled')  # 다시 disabled 상태로 설정
+                    text_widget.config(state='normal')
+                    text_widget.insert('end', str(cnt + 1) + '.' + '\n')
+                    text_widget.insert('end', ' / '.join(class_row[:3]) + '\n')
+                    text_widget.insert('end', ' / '.join(class_row[3:-1]) + '\n')
+                    text_widget.insert('end', last_text + '\n')
+
+                    # 하이퍼링크 스타일을 적용
+                    start_index = text_widget.index("end-2l")
+                    end_index = text_widget.index("end-1c")
+
+                    text_widget.tag_add("hyperlink", start_index, end_index)
+                    text_widget.tag_configure("hyperlink", foreground="blue", underline=True)
+
+                    # 클릭 이벤트 바인딩(Label 위젯에서 텍스트 클릭 시 링크 열기)
+                    text_widget.tag_bind("hyperlink", "<Button-1>", open_link)
+                    text_widget.config(state='disabled')
+
+            countdown("새로고침까지", refresh_sec)
+            error_cnt = 0
+            
+        except Exception as e:
+            error_cnt += 1
+            countdown(f"오류발생: {e}", "재시도까지", error_wait_sec)
 
 # 스레드로 실행
 threading.Thread(target=run_loop, daemon=True).start()
