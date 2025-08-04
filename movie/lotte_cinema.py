@@ -38,6 +38,24 @@ def extract(cinemaID, day):
     url = 'https://www.lottecinema.co.kr/NLCHS/Cinema/Detail?divisionCode=1&detailDivisionCode=1&cinemaID=' + str(cinemaID)
     driver.get(url)
 
+    # 팝업이 뜨는 경우 확인
+    start_time = time.time()
+    timeout = 2
+    
+    while time.time() - start_time < timeout:
+        try:
+            popup = driver.find_element(By.ID, 'layerPopupMulti')
+            if 'active' in popup.get_attribute('class'):
+                confirm_button = popup.find_element(By.CLASS_NAME, 'btnCloseLayerMulti')
+                confirm_button.click()
+                break
+        except:
+            pass
+        time.sleep(0.1)
+    else:
+        print(timeout + 'second(s)')
+
+
     closebanner = wait.until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[20]/div[3]/button')))
     closebanner.click()
 
@@ -140,7 +158,7 @@ def main():
 
     print('-----------------------------------')
     current_date = datetime.now()
-    print(f'오늘 날짜 : {current_date.strftime('%Y년 %m월 %d일')}')
+    print(f'오늘 날짜 : {current_date.strftime("%Y년 %m월 %d일")}')
     dayafter = int(input("며칠 뒤에 볼건지 : "))
 
     movies = extract(cinemaID, dayafter)
