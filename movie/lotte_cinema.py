@@ -41,7 +41,7 @@ def extract(cinemaID, day):
     # 팝업이 뜨는 경우 확인
     start_time = time.time()
     timeout = 2
-    
+
     while time.time() - start_time < timeout:
         try:
             popup = driver.find_element(By.ID, 'layerPopupMulti')
@@ -53,7 +53,7 @@ def extract(cinemaID, day):
             pass
         time.sleep(0.1)
     else:
-        print(timeout + 'second(s)')
+        print(str(timeout) + 'second(s)')
 
 
     closebanner = wait.until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[20]/div[3]/button')))
