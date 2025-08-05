@@ -109,8 +109,8 @@ def run_loop():
 
                     text_widget.config(state='normal')
                     text_widget.insert('end', str(cnt + 1) + '.' + '\n')
-                    text_widget.insert('end', ' / '.join(class_row[:3]) + '\n')
-                    text_widget.insert('end', ' / '.join(class_row[3:-1]) + '\n')
+                    text_widget.insert('end', ' /'.join(class_row[:3]) + '\n')
+                    text_widget.insert('end', ' /'.join(class_row[3:-1]) + '\n')
                     text_widget.insert('end', last_text + '\n')
 
                     # 하이퍼링크 스타일을 적용
