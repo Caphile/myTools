@@ -18,7 +18,6 @@ def check_remaining_classes():
 
     while True:
         current_url = home_url + str(page)
-        print(current_url)
         response = requests.get(current_url)
         response.raise_for_status()
 
