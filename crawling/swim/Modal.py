@@ -43,6 +43,7 @@ check_box.pack(side='left')
 # 텍스트 위젯(상단프레임 배치)
 text_widget = tk.Text(top_frame, wrap='word', font=("Consolas", 10))
 text_widget.pack(expand=True, fill='both')
+text_widget.config(cursor="arrow")
 text_widget.config(state='disabled')
 
 # stdout 리디렉션 클래스
@@ -123,6 +124,8 @@ def run_loop():
 
                     # 클릭 이벤트 바인딩(Label 위젯에서 텍스트 클릭 시 링크 열기)
                     text_widget.tag_bind("hyperlink", "<Button-1>", open_link)
+                    text_widget.tag_bind("hyperlink", "<Enter>", lambda e: text_widget.config(cursor="hand2"))
+                    text_widget.tag_bind("hyperlink", "<Leave>", lambda e: text_widget.config(cursor="arrow"))
                     text_widget.config(state='disabled')
 
             countdown("새로고침까지", refresh_sec)
