@@ -11,7 +11,8 @@ import ClassScraper
 root = tk.Tk()
 root.title("잔여 강좌 확인창")
 root.geometry("1000x400")
-root.resizable(False, False)
+root.minsize(400, 300)      # 최소 크기
+root.resizable(True, True)  # 크기 조절 가능
 
 # 상단프레임
 top_frame = tk.Frame(root)
@@ -19,7 +20,7 @@ top_frame.pack(expand=True, fill='both')
 
 # 하단프레임
 bottom_frame = tk.Frame(root, height=50)
-bottom_frame.pack(fill='x', side='bottom')
+bottom_frame.place(relx=0.5, rely=1, anchor='s', relwidth=1, height=30)
 
 # 상태 라벨(하단프레임 좌측 배치)
 status_label = tk.Label(bottom_frame, text="상태:", anchor='w')
@@ -129,7 +130,7 @@ def run_loop():
             
         except Exception as e:
             error_cnt += 1
-            countdown(f'오류발생: {e}, 재시도까지', error_wait_sec)
+            countdown(f"오류발생: {e}, 재시도까지", error_wait_sec)
 
 # 스레드로 실행
 threading.Thread(target=run_loop, daemon=True).start()
