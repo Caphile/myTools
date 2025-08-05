@@ -22,18 +22,22 @@ bottom_frame = tk.Frame(root, height=50)
 bottom_frame.pack(fill='x', side='bottom')
 
 # 상태 라벨(하단프레임 좌측 배치)
-status_label = tk.Label(bottom_frame, text="상태:", width=10, anchor='w')
-status_label.pack(side='left', padx=10)
+status_label = tk.Label(bottom_frame, text="상태:", anchor='w')
+status_label.pack(side='left', padx=10, fill='x', expand=True)
 
-# 체크박스(하단프레임 우측 배치)
+# 체크박스
+check_frame = tk.Frame(bottom_frame, bd=1, relief="ridge", padx=5, pady=5)
+check_frame.pack(side='right', padx=0)
+
 check_var = tk.BooleanVar()
 def toggle_topmost():
     if check_var.get():
         root.attributes("-topmost", True)
     else:
         root.attributes("-topmost", False)
-check_box = tk.Checkbutton(bottom_frame, text="화면고정", variable=check_var, command=toggle_topmost)
-check_box.pack(side='right', padx=10)
+
+check_box = tk.Checkbutton(check_frame, text="화면고정", variable=check_var, command=toggle_topmost)
+check_box.pack(side='left')
 
 # 텍스트 위젯(상단프레임 배치)
 text_widget = tk.Text(top_frame, wrap='word', font=("Consolas", 10))
@@ -53,7 +57,7 @@ class RedirectText:
     def flush(self):
         pass
 
-sys.stdout = RedirectText(text_widget)
+#sys.stdout = RedirectText(text_widget)
 sys.stderr = RedirectText(text_widget)
 #----------------------------------------------------------------------------
 
@@ -69,14 +73,11 @@ def open_link(event):
     webbrowser.open(line_text)
 
 def countdown(message, seconds):
-    def update_countdown(i):
-        if i > 0:
-            status_label.config(text=f"{message} {i}초")
-            root.after(1000, update_countdown, i - 1)
-        else:
-            status_label.config(text=f"{message} 완료!")
-
-    update_countdown(seconds)
+    for i in range(seconds, 0, -1):
+        status_label.config(text=f"{message} {i}초")
+        time.sleep(1)
+    
+    status_label.config(text=f"{message} 완료!")
 
 # 실행 루프
 def run_loop():
@@ -88,7 +89,7 @@ def run_loop():
 
     while error_cnt < error_cnt_max:
         try:
-            status_label.config(text="검색중..")
+            status_label.config(text="검색중...")
             classes = ClassScraper.check_remaining_classes()
 
             # 기존 텍스트 삭제
@@ -128,7 +129,7 @@ def run_loop():
             
         except Exception as e:
             error_cnt += 1
-            countdown(f"오류발생: {e}", "재시도까지", error_wait_sec)
+            countdown(f'오류발생: {e}, 재시도까지', error_wait_sec)
 
 # 스레드로 실행
 threading.Thread(target=run_loop, daemon=True).start()
