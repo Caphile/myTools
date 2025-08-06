@@ -6,13 +6,21 @@ import webbrowser
 
 import ClassScraper
 
+import os
+
+swim_dir = os.path.abspath(os.path.dirname(__file__))
+os.chdir(swim_dir)
+
 #----------------------------------------------------------------------------
 # Tkinter 창 설정
 root = tk.Tk()
-root.title("잔여 강좌 확인창")
+root.title("잔여 강좌 검색기")
 root.geometry("1000x400")
 root.minsize(400, 300)      # 최소 크기
 root.resizable(True, True)  # 크기 조절 가능
+
+icon_path = os.path.join(swim_dir, "chair_icon.ico")
+root.iconbitmap(icon_path)
 
 # 상단프레임
 top_frame = tk.Frame(root)
