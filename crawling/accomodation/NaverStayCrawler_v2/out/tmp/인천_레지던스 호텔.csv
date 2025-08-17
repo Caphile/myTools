@@ -1,0 +1,4 @@
+﻿idx,city,region_idx,name,name_en,property_type,grade,tel,address,rating_hotelscombined,rating_booking,rating_tripadvisor,rating_naver,website,detail_url
+1,인천,1,인천 드리밍 하우스,Incheon Dreaming House,레지던스 호텔,3급,,미단행복로 83,,,,,,https://hotels.naver.com/KR1000532/hotels/N5280463?adultCnt=2&pageIndex=1&propertyTypes=19&dCheckIn=2025-08-23&dCheckOut=2025-08-24&dAdultCnt=2&dChildAges=
+2,인천,2,인천 공항 이가락 레지던스,Egarak Residence,레지던스 호텔,2급,,"공항로424번길 72, 406호",,,,,,https://hotels.naver.com/KR1000532/hotels/N1915551?adultCnt=2&pageIndex=1&propertyTypes=19&dCheckIn=2025-08-23&dCheckOut=2025-08-24&dAdultCnt=2&dChildAges=
+3,인천,3,노아 레지던스 인천 에어포트,Noa residence Incheon Airport,레지던스 호텔,2급,,공항로424번길 60,,,,,,https://hotels.naver.com/KR1000532/hotels/N4360369?adultCnt=2&pageIndex=1&propertyTypes=19&dCheckIn=2025-08-23&dCheckOut=2025-08-24&dAdultCnt=2&dChildAges=

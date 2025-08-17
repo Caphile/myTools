@@ -1,0 +1,3 @@
+﻿city,property_type,page,card_index,reason,page_url
+제주,게스트하우스,6,13,StaleElementReferenceException,https://hotels.naver.com/KR1000533/hotels/N3644664?adultCnt=2&pageIndex=6&propertyTypes=8&dCheckIn=2025-08-23&dCheckOut=2025-08-24&dAdultCnt=2&dChildAges=
+제주,게스트하우스,6,14,StaleElementReferenceException,https://hotels.naver.com/KR1000533/hotels/N3644664?adultCnt=2&pageIndex=6&propertyTypes=8&dCheckIn=2025-08-23&dCheckOut=2025-08-24&dAdultCnt=2&dChildAges=

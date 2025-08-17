@@ -1,0 +1,5 @@
+﻿idx,city,region_idx,name,name_en,property_type,grade,tel,address,rating_hotelscombined,rating_booking,rating_tripadvisor,rating_naver,website,detail_url
+1,제주,1,제주 노바 펜션,Jeju Nova Pension,레지던스 호텔,,,조천읍 조천북1길 42,4,,,,https://nova.h2yo.kr/,https://hotels.naver.com/KR1000533/hotels/KYK1072385786?adultCnt=2&pageIndex=1&propertyTypes=19&dCheckIn=2025-08-23&dCheckOut=2025-08-24&dAdultCnt=2&dChildAges=
+2,제주,2,스프링데일,Springdale,레지던스 호텔,3급,064-800-8000,남원읍 서성로 459,,,,,,https://hotels.naver.com/KR1000533/hotels/KYK704335?adultCnt=2&pageIndex=1&propertyTypes=19&dCheckIn=2025-08-23&dCheckOut=2025-08-24&dAdultCnt=2&dChildAges=
+3,제주,3,모닝마드리드,Morning Madrid,레지던스 호텔,4급,,연동6길 5,7.7,,,,http://www.morningmadrid.com/,https://hotels.naver.com/KR1000533/hotels/N5304736?adultCnt=2&pageIndex=1&propertyTypes=19&dCheckIn=2025-08-23&dCheckOut=2025-08-24&dAdultCnt=2&dChildAges=
+4,제주,4,Jeju Centralpark Residence,,레지던스 호텔,,,대한민국 제주도 제주시,8,,,,,https://hotels.naver.com/KR1000533/hotels/KYK7535897?adultCnt=2&pageIndex=1&propertyTypes=19&dCheckIn=2025-08-23&dCheckOut=2025-08-24&dAdultCnt=2&dChildAges=

@@ -1,0 +1,5 @@
+﻿idx,city,region_idx,name,name_en,property_type,grade,tel,address,rating_hotelscombined,rating_booking,rating_tripadvisor,rating_naver,website,detail_url
+1,충남,1,Hill of Dangjin Storm,,민박(Inn),1급,,대한민국 충청남도 당진,,,,,,https://hotels.naver.com/KR1000008/hotels/KYK9355963?adultCnt=2&pageIndex=1&propertyTypes=2&dCheckIn=2025-08-23&dCheckOut=2025-08-24&dAdultCnt=2&dChildAges=
+2,충남,2,Gongju Q Self Check-in Motel,,민박(Inn),,,대한민국 충청남도 공주,,,,,https://www.goodchoice.kr/search/detailView/12431,https://hotels.naver.com/KR1000008/hotels/KYK1070525504?adultCnt=2&pageIndex=1&propertyTypes=2&dCheckIn=2025-08-23&dCheckOut=2025-08-24&dAdultCnt=2&dChildAges=
+3,충남,3,Hongseong Sopung Self Check-in Motel,,민박(Inn),,,대한민국 충청남도 홍성,,,,,,https://hotels.naver.com/KR1000008/hotels/KYK1070701848?adultCnt=2&pageIndex=1&propertyTypes=2&dCheckIn=2025-08-23&dCheckOut=2025-08-24&dAdultCnt=2&dChildAges=
+4,충남,4,Gyeryong Dream Self Check-in Hotel,,민박(Inn),,,대한민국 충청남도 계룡,,,,,,https://hotels.naver.com/KR1000008/hotels/KYK1070701789?adultCnt=2&pageIndex=1&propertyTypes=2&dCheckIn=2025-08-23&dCheckOut=2025-08-24&dAdultCnt=2&dChildAges=
